@@ -1,7 +1,8 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, ProductSerializer, CategorySerializer
+from .serializers import UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer
 from products.models import Product, Category
+from orders.models import Order
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
@@ -33,6 +34,11 @@ class ProductViewSet(ModelViewSet):
     search_fields = ['title']
     ordering_fields = ['price', 'release_date']
     pagination_class = PageNumberPagination
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
 
 def register_user(request):
     return JsonResponse({'message': 'User registered successfully'})

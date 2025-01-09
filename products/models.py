@@ -11,15 +11,15 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default='')
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock_quantity = models.PositiveIntegerField()
+    stock_quantity = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
-    platform = models.CharField(max_length=50, choices=[('PC', 'PC'), ('Console', 'Console')])
-    release_date = models.DateField()
-    image_url = models.URLField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    platform = models.CharField(max_length=50, choices=[('PC', 'PC'), ('Console', 'Console')], default='PC')
+    release_date = models.DateField(default=None)
+    image_url = models.URLField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def reduce_stock(self, quantity):
         if self.stock_quantity >= quantity:

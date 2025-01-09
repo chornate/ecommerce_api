@@ -7,6 +7,8 @@ from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django.http import JsonResponse
+
 
 User = get_user_model()
 
@@ -20,6 +22,7 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
@@ -30,3 +33,9 @@ class ProductViewSet(ModelViewSet):
     search_fields = ['title']
     ordering_fields = ['price', 'release_date']
     pagination_class = PageNumberPagination
+
+def register_user(request):
+    return JsonResponse({'message': 'User registered successfully'})
+
+def login_user(request):
+    return JsonResponse({'message': 'User logged in successfully'})

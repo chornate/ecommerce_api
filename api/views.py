@@ -1,14 +1,16 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer
+from .serializers import UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, OrderItemSerializer
 from products.models import Product, Category
-from orders.models import Order
+from orders.models import Order, OrderItem
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import django_filters
 
 
 User = get_user_model()
@@ -25,6 +27,15 @@ class CategoryViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     http_method_names = ['get', 'post', 'put', 'delete']
 
+class ProductFilter(django_filters.rest_framework.FilterSet):
+    min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
+    max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
+
+    class Meta:
+        model = Product
+        fields = ['category', 'platform', 'min_price', 'max_price']
+
+
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -40,6 +51,12 @@ class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
+class OrderItemViewSet(ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = [IsAuthenticated]
+
+@csrf_exempt
 def register_user(request):
     return JsonResponse({'message': 'User registered successfully'})
 

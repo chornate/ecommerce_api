@@ -28,8 +28,27 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
+
     class Meta:
         model = Order
-        fields = ['id', 'user', 'status', 'created_at', 'items']
+        fields = ['user', 'items', 'status', 'created_at']
 
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        
+        order_items = []
+        for item_data in items_data:
+            product = item_data['product']
+            quantity = item_data['quantity']
+            price = product.price
 
+            if product.stock_quantity >= quantity:
+                product.stock_quantity -= quantity
+                product.save()
+                order_items.append(OrderItem(order=order, product=product, quantity=quantity, price=price))
+            else:
+                raise serializers.ValidationError("Not enough stock available")
+        
+        OrderItem.objects.bulk_create(order_items)
+        return order

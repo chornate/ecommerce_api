@@ -17,7 +17,7 @@ class Product(models.Model):
     stock_quantity = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
     platform = models.CharField(max_length=50, choices=[('PC', 'PC'), ('Console', 'Console')], default='PC')
-    release_date = models.DateField(default=None)
+    release_date = models.DateField(null=True, blank=True)
     image_url = models.URLField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 

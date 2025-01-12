@@ -6,19 +6,33 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView
 )
 
+# Create a router instance
 router = DefaultRouter()
 
-router.register(r'users', UserViewSet)
-router.register(r'products', ProductViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'orders', OrderViewSet)
-router.register(r'order-items', OrderItemViewSet)
+# Register viewsets with the router
+router.register(r'users', UserViewSet)  # User viewset
+router.register(r'products', ProductViewSet)  # Product viewset
+router.register(r'categories', CategoryViewSet)  # Category viewset
+router.register(r'orders', OrderViewSet)  # Order viewset
+router.register(r'order-items', OrderItemViewSet)  # Order item viewset
 
+# Define URL patterns
 urlpatterns = [
+    # Token obtain pair view
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    
+    # Register user view
     path('auth/register/', register_user, name='register'),
+    
+    # Login user view
     path('auth/login/', login_user, name='login'),
+    
+    # Review list create view
     path('reviews/', ReviewListCreateView.as_view(), name='review-list-create'),
+    
+    # Wishlist list create view
     path('wishlist/', WishlistListCreateView.as_view(), name='wishlist-list-create'),
+    
+    # Wishlist delete view
     path('wishlist/<int:id>/', WishlistDeleteView.as_view(), name='wishlist-delete'),
-] + router.urls
+] + router.urls 

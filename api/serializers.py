@@ -5,27 +5,32 @@ from orders.models import Order, OrderItem
 
 User = get_user_model()
 
+# Serializer for User model
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
+# Serializer for Category model
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
+# Serializer for Product model
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
 
+# Serializer for OrderItem model
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ['product', 'quantity', 'price']
 
+# Serializer for Order model
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
 
@@ -53,11 +58,13 @@ class OrderSerializer(serializers.ModelSerializer):
         OrderItem.objects.bulk_create(order_items)
         return order
 
+# Serializer for Review model
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'product', 'user', 'rating', 'comment', 'created_at']
 
+# Serializer for Wishlist model
 class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist

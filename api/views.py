@@ -22,17 +22,20 @@ from api.serializers import ReviewSerializer, WishlistSerializer
 User = get_user_model()
 
 
+# ViewSet for managing users
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
+# ViewSet for managing categories
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     http_method_names = ['get', 'post', 'put', 'delete']
 
+# FilterSet for filtering products based on price and other fields
 class ProductFilter(django_filters.rest_framework.FilterSet):
     min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
@@ -41,7 +44,7 @@ class ProductFilter(django_filters.rest_framework.FilterSet):
         model = Product
         fields = ['category', 'platform', 'min_price', 'max_price']
 
-
+# ViewSet for managing products
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -52,16 +55,19 @@ class ProductViewSet(ModelViewSet):
     ordering_fields = ['price', 'release_date']
     pagination_class = PageNumberPagination
 
+# ViewSet for managing orders
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
+# ViewSet for managing order items
 class OrderItemViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
 
+# View for listing and creating reviews
 class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -69,6 +75,7 @@ class ReviewListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+# View for listing and creating wishlist items
 class WishlistListCreateView(generics.ListCreateAPIView):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
@@ -76,11 +83,13 @@ class WishlistListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+# View for deleting wishlist items
 class WishlistDeleteView(generics.DestroyAPIView):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
     lookup_field = 'id'
 
+# Function to register a new user
 @csrf_exempt
 def register_user(request):
     if request.method == 'POST':
@@ -97,6 +106,7 @@ def register_user(request):
             return JsonResponse({'error': 'Email and password are required'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+# Function to login a user
 @csrf_exempt
 def login_user(request):
     if request.method == 'POST':

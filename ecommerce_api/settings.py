@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f=3=9#2q_3!l*xomib-p=xlwz7i9u625u)s56@v&npnp+3%+*+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['chornate.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition

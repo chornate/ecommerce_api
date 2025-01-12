@@ -14,6 +14,9 @@ import django_filters
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 import json
+from rest_framework import generics
+from products.models import Review, Wishlist
+from api.serializers import ReviewSerializer, WishlistSerializer
 
 
 User = get_user_model()
@@ -58,6 +61,25 @@ class OrderItemViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
+
+class ReviewListCreateView(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class WishlistListCreateView(generics.ListCreateAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class WishlistDeleteView(generics.DestroyAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
+    lookup_field = 'id'
 
 @csrf_exempt
 def register_user(request):

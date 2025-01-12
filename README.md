@@ -1,73 +1,85 @@
-# E-commerce API
+# Video Game E-commerce API
 
-This repository contains the source code for an E-commerce API designed to manage product listings, user authentication, and order handling for a video games platform. The API is built using Django and Django REST Framework (DRF).
+This is a video game e-commerce API built with Django and Django REST framework. It includes features for user authentication, product management, order processing, product reviews, and wishlists.
 
 ## Features
 
-- **User Authentication**: Secure user registration and login using JWTs.
-- **Product Management**: CRUD operations for products.
-- **Search Functionality**: Advanced product search with filters.
-- **Order Management**: Placing and managing customer orders.
-- **Secure API**: Role-based permissions and token-based authentication.
-
-## Technologies Used
-
-- **Backend Framework**: Django, Django REST Framework
-- **Authentication**: Simple JWT for token-based authentication
-- **Database**: PostgreSQL (can be switched to SQLite for development)
-- **Testing**: Built-in Django testing tools
+- **User Authentication**: Register and login users.
+- **Product Management**: Create, update, delete, and list video games.
+- **Order Processing**: Create and manage orders.
+- **Product Reviews**: Allow users to submit reviews and ratings for video games.
+- **Wishlist**: Allow users to add video games to a wishlist.
 
 ## Installation
 
-Follow these steps to set up the project locally:
-
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/chornate/ecommerce_api.git
-   cd ecommerce_api
-   ```
+    ```bash
+    git clone https://github.com/yourusername/videogame_ecommerce_api.git
+    cd videogame_ecommerce_api
+    ```
 
 2. Create and activate a virtual environment:
-   ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows, use `env\Scripts\activate`
-   ```
+    ```bash
+    python -m venv env
+    source env/bin/activate  # On Windows, use `env\Scripts\activate`
+    ```
 
 3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 4. Set up the database:
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
 
 5. Create a superuser for accessing the admin panel:
-   ```bash
-   python manage.py createsuperuser
-   ```
+    ```bash
+    python manage.py createsuperuser
+    ```
 
 6. Run the development server:
-   ```bash
-   python manage.py runserver
-   ```
+    ```bash
+    python manage.py runserver
+    ```
 
-## Endpoints
+## API Endpoints
 
 ### Authentication
-- **POST** `/api/auth/register/`: Register a new user.
-- **POST** `/api/auth/login/`: Log in to get access and refresh tokens.
 
-### Products
-- **GET** `/api/products/`: List all products.
-- **POST** `/api/products/`: Create a new product (admin only).
-- **GET** `/api/products/<id>/`: Retrieve a specific product.
-- **PUT** `/api/products/<id>/`: Update a product (admin only).
-- **DELETE** `/api/products/<id>/`: Delete a product (admin only).
+- `POST /auth/register/`: Register a new user.
+- `POST /auth/login/`: Login a user and obtain a token.
+
+### Video Games
+
+- `GET /products/`: List all video games.
+- `POST /products/`: Create a new video game.
+- `GET /products/{id}/`: Retrieve a video game by ID.
+- `PUT /products/{id}/`: Update a video game by ID.
+- `DELETE /products/{id}/`: Delete a video game by ID.
 
 ### Orders
-- **GET** `/api/orders/`: List all orders (admin only).
-- **POST** `/api/orders/`: Place a new order.
-- **GET** `/api/orders/<id>/`: Retrieve details of a specific order.
+
+- `GET /orders/`: List all orders.
+- `POST /orders/`: Create a new order.
+- `GET /orders/{id}/`: Retrieve an order by ID.
+- `PUT /orders/{id}/`: Update an order by ID.
+- `DELETE /orders/{id}/`: Delete an order by ID.
+
+### Product Reviews
+
+- `GET /reviews/`: List all reviews.
+- `POST /reviews/`: Create a new review.
+
+### Wishlist
+
+- `GET /wishlist/`: List all wishlist items.
+- `POST /wishlist/`: Add a video game to the wishlist.
+- `DELETE /wishlist/{id}/`: Remove a video game from the wishlist.
+
+## Deployment
+
+The API is deployed and accessible at: [https://chornate.pythonanywhere.com/api/](https://chornate.pythonanywhere.com/api/)
+

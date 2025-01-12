@@ -27,3 +27,21 @@ class Product(models.Model):
             self.save()
         else:
             raise ValueError("Insufficient stock")
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review for {self.product.title} by {self.user.username}'
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, related_name='wishlist', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='wishlisted_by', on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} wishlist'

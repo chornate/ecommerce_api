@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from products.models import Product, Category
+from products.models import Product, Category, Review, Wishlist
 from orders.models import Order, OrderItem
 
 User = get_user_model()
@@ -52,3 +52,13 @@ class OrderSerializer(serializers.ModelSerializer):
         
         OrderItem.objects.bulk_create(order_items)
         return order
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'product', 'user', 'rating', 'comment', 'created_at']
+
+class WishlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ['id', 'user', 'product', 'added_at']
